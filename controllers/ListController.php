@@ -16,11 +16,15 @@ class ListController extends AbstractController {
         if ($this->isConnected()) {
             if (!empty($_POST)) {
                 $this->checkPost();
-                $this->loadModel('list');
-                if (ListModel::addArchive($_SESSION['mail'], $_POST['reference'])) {
-                    header("Location: /historia/list/index?lang={$GLOBALS['i18n']}");
+                if (preg_match('/^[A-Z0-9_]+$/', $_POST['reference'])) {
+                    $this->loadModel('list');
+                    if (ListModel::addArchive($_SESSION['mail'], $_POST['reference'])) {
+                        header("Location: /historia/list/index?lang={$GLOBALS['i18n']}");
+                    } else {
+                        echo 'Impossible d\'ajouter l\'archive, vous la possédez déjà';
+                    }
                 } else {
-                    echo 'Impossible d\'ajouter l\'archive, vous la possédez déjà';
+                    echo 'Seuls les caractères numériques, les lettres majuscules et les underscore sont autorisés pour les références d\'archives';
                 }
             } else {
                 http_response_code(400);

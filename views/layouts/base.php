@@ -17,9 +17,8 @@
         </center>
         <?php if ($this->isConnected()) : ?>
             <div style="float: right">
-                <p><?= $GLOBALS['lang']['welcome'] . ' ' . $_SESSION['pseudo'] ?></p>
-                <p><?= $GLOBALS['lang']['number_offers'] ?> : <b><?= $_SESSION['nb_offres'] ?></b></p>
-                <p><?= $GLOBALS['lang']['number_demands'] ?> : <b><?= $_SESSION['nb_demandes'] ?></b></p>
+                <p><?= $GLOBALS['lang']['welcome'] . ' <b>' . $_SESSION['pseudo'] . '</b>' ?></p>
+                <p><?= $GLOBALS['lang']['ratio'] . ' : <b>' . round($_SESSION['nb_offres'] / ($_SESSION['nb_demandes'] + 1), 2) . '</b>' ?></p>
             </div>
         <?php endif; ?>
         <div>

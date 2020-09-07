@@ -6,19 +6,23 @@ class UserController extends AbstractController {
         if (!$this->isConnected()) {
             if (!empty($_POST)) {
                 $this->checkPost();
-                $this->loadModel('user');
-                $data = UserModel::createUser(
-                                $_POST['mail'],
-                                password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT, ['cost' => 12]),
-                                $_POST['pseudo']
-                );
-                extract($data);
-                if ($number_rows == 1) {
-                    $this->sendMail($token);
-                    echo 'La création de votre compte a réussi.<br>'
-                    . 'Confirmez-le en cliquant sur le lien contenu dans le mail que vous avez reçu à l\'adresse indiquée pendant l\'inscription';
+                if (preg_match('/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@(etu.)?univ-paris1.fr$/ix', $_POST['mail'])) {
+                    $this->loadModel('user');
+                    $data = UserModel::createUser(
+                                    $_POST['mail'],
+                                    password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT, ['cost' => 12]),
+                                    $_POST['pseudo']
+                    );
+                    extract($data);
+                    if ($number_rows == 1) {
+                        $this->sendMail($token);
+                        echo 'La création de votre compte a réussi.<br>'
+                        . 'Confirmez-le en cliquant sur le lien contenu dans le mail que vous avez reçu à l\'adresse indiquée pendant l\'inscription';
+                    } else {
+                        echo 'La création de votre compte a échoué';
+                    }
                 } else {
-                    echo 'La création de votre compte a échoué';
+                    echo 'Vous ne pouvez vous inscrire qu\'avec un mail académique de Paris 1';
                 }
             } else {
                 $this->render('create');

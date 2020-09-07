@@ -35,5 +35,6 @@ $lang = [
     'password' => 'Mot de passe',
     'create' => 'Créer',
     'pseudo' => 'Pseudo',
-    'translate' => 'Traduire'
+    'translate' => 'Traduire',
+    'ratio' => 'Ratio'
 ];

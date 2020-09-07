@@ -15,21 +15,25 @@ class DemandController extends AbstractController {
 
     public function add(): void {
         if ($this->isConnected()) {
-            if (!empty($_POST)) {
-                $this->checkPost();
-                $this->loadModel('demand');
-                if ($_SESSION['nb_demandes'] < $_SESSION['nb_offres']) {
-                    if (DemandModel::addDemand($_SESSION['mail'], $_POST['reference'], date('Y-m-d H:i:s'))) {
-                        $this->updateSession(['nb_demandes' => $_SESSION['nb_demandes'] + 1]);
-                        header("Location: /historia/demand/index?lang={$GLOBALS['i18n']}");
+            if ($_SESSION['nb_demandes'] < $_SESSION['nb_offres']) {
+                if (!empty($_POST)) {
+                    $this->checkPost();
+                    if (preg_match('/^[A-Z0-9_]+$/', $_POST['reference'])) {
+                        $this->loadModel('demand');
+                        if (DemandModel::addDemand($_SESSION['mail'], $_POST['reference'], date('Y-m-d H:i:s'))) {
+                            $this->updateSession(['nb_demandes' => $_SESSION['nb_demandes'] + 1]);
+                            header("Location: /historia/demand/index?lang={$GLOBALS['i18n']}");
+                        } else {
+                            echo 'Vous ne pouvez pas déposer plus d\'une demande pour une même archive';
+                        }
                     } else {
-                        echo 'Vous ne pouvez pas déposer plus d\'une demande pour une même archive';
+                        echo 'Seuls les caractères numériques, les lettres majuscules et les underscore sont autorisés pour les références d\'archives';
                     }
                 } else {
-                    echo 'Votre nombre de demandes doit être inférieur au nombre d\'offres pour pouvoir déposer une demande';
+                    http_response_code(400);
                 }
             } else {
-                http_response_code(400);
+                echo 'Votre ratio doit être supérieur à 1 pour pouvoir déposer une demande';
             }
         } else {
             header("Location: /historia/user/connect?lang={$GLOBALS['i18n']}");

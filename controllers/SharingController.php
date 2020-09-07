@@ -80,7 +80,7 @@ HTML;
                 ->setFilename($_FILES['archive']['name']));
         $smtp_transport = (new Swift_SmtpTransport('smtp.gmail.com', 587, 'tls'))
                 ->setUsername('contact.historia.42@gmail.com')
-                ->setPassword('');
+                ->setPassword('<Xv74Vu%2w');
         $mailer = new Swift_Mailer($smtp_transport);
         $mailer->send($message);
     }
