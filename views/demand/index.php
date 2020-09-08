@@ -3,22 +3,24 @@
 <form action="/historia/demand/add?lang=<?= $GLOBALS['i18n'] ?>" method="post">
     <fieldset>
         <legend><?= $title ?></legend>
-        <div>
-            <input type="text" name="reference" placeholder="<?= $GLOBALS['lang']['reference'] ?>*" required>
-        </div>
-        <br>
-        <div>
-            <input type="submit" value="<?= $GLOBALS['lang']['ask'] ?>">
-        </div>
-        <br>
-        <div>
-            <input type="reset" value="<?= $GLOBALS['lang']['reset'] ?>">
+        <div class="controlgroup">
+            <div>
+                <input type="text" name="reference" placeholder="<?= $GLOBALS['lang']['reference'] ?>*" required>
+            </div>
+            <br>
+            <div>
+                <input type="submit" value="<?= $GLOBALS['lang']['ask'] ?>">
+            </div>
+            <br>
+            <div>
+                <input type="reset" value="<?= $GLOBALS['lang']['reset'] ?>">
+            </div>
         </div>
     </fieldset>
 </form>
 <br>
 
-<table width="100%" border="1px">
+<table>
     <thead>
         <tr>
             <th><?= $GLOBALS['lang']['date'] ?></th>
@@ -37,7 +39,9 @@
             </td>
             <td>
                 <center>
-                    <a href="/historia/demand/delete/<?= $demande['d_fk_archive_reference'] . "?lang={$GLOBALS['i18n']}" ?>"><?= $GLOBALS['lang']['delete'] ?></a>
+                    <a href="/historia/demand/delete/<?= $demande['d_fk_archive_reference'] . "?lang={$GLOBALS['i18n']}" ?>">
+                        <img src="/historia/public/img/delete.png" alt="<?= $GLOBALS['lang']['delete'] ?>">
+                    </a>
                 </center>
             </td>
         </tr>

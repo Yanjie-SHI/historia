@@ -7,17 +7,19 @@
 <form action="/historia/sharing/share/<?= $sharing[0]['d_jeton'] . "?lang={$GLOBALS['i18n']}" ?>" method="post" enctype="multipart/form-data">
     <fieldset>
         <legend><?= $GLOBALS['lang']['sharing_index_title'] ?></legend>
-        <div>
-            <label for="archive"><?= $GLOBALS['lang']['sharing_share_label_1'] ?> : </label>
-            <input type="file" id="archive" name="archive" required>
-        </div>
-        <br>
-        <div>
-            <input type="submit" value="<?= $GLOBALS['lang']['share'] ?>">
-        </div>
-        <br>
-        <div>
-            <input type="reset" value="<?= $GLOBALS['lang']['reset'] ?>">
+        <div class="controlgroup">
+            <div>
+                <label for="archive"><?= $GLOBALS['lang']['sharing_share_label_1'] ?> : </label>
+                <input type="file" id="archive" name="archive" required>
+            </div>
+            <br>
+            <div>
+                <input type="submit" value="<?= $GLOBALS['lang']['share'] ?>">
+            </div>
+            <br>
+            <div>
+                <input type="reset" value="<?= $GLOBALS['lang']['reset'] ?>">
+            </div>
         </div>
     </fieldset>
 </form>

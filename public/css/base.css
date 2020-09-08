@@ -1,0 +1,17 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    border: 1px solid black;
+}
+body {
+    background-color: silver;
+    font-family: "Trebuchet MS", sans-serif;
+}
+li > a {
+    text-decoration: none;
+}
+#menu {
+    width: 20%;
+}

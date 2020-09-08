@@ -2,7 +2,7 @@
 
 <p><?php printf($GLOBALS['lang']['sharing_index_p_1'], count($sharings)) ?></p>
 
-<table width="100%" border="1px">
+<table>
     <thead>
         <th><?= $GLOBALS['lang']['date'] ?></th>
         <th><?= $GLOBALS['lang']['archive'] ?></th>
@@ -23,7 +23,9 @@
             </td>
             <td>
                 <center>
-                    <a href="/historia/sharing/share/<?= $sharing['d_jeton'] . "?lang={$GLOBALS['i18n']}" ?>"><?= $GLOBALS['lang']['share'] ?></a>
+                    <a href="/historia/sharing/share/<?= $sharing['d_jeton'] . "?lang={$GLOBALS['i18n']}" ?>">
+                        <img src="/historia/public/img/share.png" alt="<?= $GLOBALS['lang']['share'] ?>">
+                    </a>
                 </center>
             </td>
         </tr>
