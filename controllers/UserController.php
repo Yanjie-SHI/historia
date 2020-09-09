@@ -6,23 +6,19 @@ class UserController extends AbstractController {
         if (!$this->isConnected()) {
             if (!empty($_POST)) {
                 $this->checkPost();
-                if (preg_match('/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@(etu.)?univ-paris1.fr$/ix', $_POST['mail'])) {
-                    $this->loadModel('user');
-                    $data = UserModel::createUser(
-                                    $_POST['mail'],
-                                    password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT, ['cost' => 12]),
-                                    $_POST['pseudo']
-                    );
-                    extract($data);
-                    if ($number_rows == 1) {
-                        $this->sendMail($token);
-                        echo 'La création de votre compte a réussi.<br>'
-                        . 'Confirmez-le en cliquant sur le lien contenu dans le mail que vous avez reçu à l\'adresse indiquée pendant l\'inscription';
-                    } else {
-                        echo 'La création de votre compte a échoué';
-                    }
+                $this->loadModel('user');
+                $data = UserModel::createUser(
+                                $_POST['mail'],
+                                password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT, ['cost' => 12]),
+                                $_POST['pseudo']
+                );
+                extract($data);
+                if ($number_rows == 1) {
+                    $this->sendMail($token);
+                    echo 'La création de votre compte a réussi.<br>'
+                    . 'Confirmez-le en cliquant sur le lien contenu dans le mail que vous avez reçu à l\'adresse indiquée pendant l\'inscription';
                 } else {
-                    echo 'Vous ne pouvez vous inscrire qu\'avec un mail académique de Paris 1';
+                    echo 'La création de votre compte a échoué';
                 }
             } else {
                 $this->render('create');
@@ -57,7 +53,7 @@ class UserController extends AbstractController {
                 $this->checkPost();
                 $this->loadModel('user');
                 $user = UserModel::connectUser($_POST['mail'], $_POST['mot_de_passe']);
-                $this->initSession($user['u_mail'], $user['u_pseudo'], $user['u_nb_offres'], $user['u_nb_demandes'], $user['u_jeton']);
+                $this->initSession($user['u_mail'], $user['u_pseudo'], $user['u_ratio'], $user['u_jeton']);
                 header("Location: /historia?lang={$GLOBALS['i18n']}");
             } else {
                 $this->render('connect');

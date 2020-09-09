@@ -23,7 +23,7 @@
         <?php if ($this->isConnected()) : ?>
             <div style="float: right">
                 <p><?= $GLOBALS['lang']['welcome'] . ' <b>' . $_SESSION['pseudo'] . '</b>' ?></p>
-                <p><?= $GLOBALS['lang']['ratio'] . ' : <b>' . round($_SESSION['nb_offres'] / ($_SESSION['nb_demandes'] + 1), 2) . '</b>' ?></p>
+                <p><?= $GLOBALS['lang']['ratio'] . ' : <b>' . $_SESSION['ratio'] . '</b> point(s)' ?></p>
             </div>
         <?php endif; ?>
         <ul id="menu">

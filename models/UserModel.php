@@ -4,7 +4,7 @@ class UserModel extends MyPDO {
 
     public static function createUser(string $mail, string $mot_de_passe, string $pseudo): array {
         $token = self::generateToken('utilisateur');
-        $number_rows = self::getMyPDO()->exec("INSERT INTO utilisateur VALUES('$mail', '$mot_de_passe', '$pseudo', 5, 0, '$token', 'C', NULL)");
+        $number_rows = self::getMyPDO()->exec("INSERT INTO utilisateur VALUES('$mail', '$mot_de_passe', '$pseudo', 100, '$token', 'C', NULL)");
         return compact('token', 'number_rows');
     }
 

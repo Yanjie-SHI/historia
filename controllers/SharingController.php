@@ -27,7 +27,8 @@ class SharingController extends AbstractController {
                 $this->checkFiles();
                 $this->sendMail($sharing[0]);
                 SharingModel::doSharing($_SESSION['mail'], $sharing[0]['d_jeton']);
-                $this->updateSession(['nb_offres' => $_SESSION['nb_offres'] + 1]);
+                // mon_ratio += nb de pages de l'archive
+                // son_ratio -= nb de pages de l'archive
                 header("Location: /historia?lang={$GLOBALS['i18n']}");
             } else {
                 $this->deleteTime($sharing);

@@ -16,7 +16,6 @@ class DemandModel extends MyPDO {
             $token = self::generateToken('demande');
             self::getMyPDO()->exec("INSERT INTO archive VALUES ('$reference')");
             self::getMyPDO()->exec("INSERT INTO demande VALUES ('$mail', '$reference', '$token', '$date')");
-            self::updateNumberDemands($mail, '+');
             return true;
         } else {
             return false;
@@ -26,15 +25,10 @@ class DemandModel extends MyPDO {
     public static function deleteDemand(string $mail, string $reference): bool {
         if (self::checkDemand($mail, $reference) == 1) {
             self::getMyPDO()->exec("DELETE FROM demande WHERE d_fk_utilisateur_mail = '$mail' AND d_fk_archive_reference = '$reference'");
-            self::updateNumberDemands($mail, '-');
             return true;
         } else {
             return false;
         }
-    }
-
-    private static function updateNumberDemands(string $mail, string $signe): void {
-        self::getMyPDO()->exec("UPDATE utilisateur SET u_nb_demandes = u_nb_demandes $signe 1 WHERE u_mail = '$mail'");
     }
 
     private static function checkDemand(string $mail, string $reference): int {

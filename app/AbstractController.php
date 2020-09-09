@@ -29,11 +29,10 @@ abstract class AbstractController {
         return !empty($_SESSION);
     }
 
-    protected function initSession(string $mail, string $pseudo, string $nb_offres, string $nb_demandes, string $jeton): void {
+    protected function initSession(string $mail, string $pseudo, string $ratio, string $jeton): void {
         $_SESSION['mail'] = $mail;
         $_SESSION['pseudo'] = $pseudo;
-        $_SESSION['nb_offres'] = $nb_offres;
-        $_SESSION['nb_demandes'] = $nb_demandes;
+        $_SESSION['ratio'] = $ratio;
         $_SESSION['jeton'] = $jeton;
     }
 

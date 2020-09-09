@@ -15,13 +15,12 @@ class DemandController extends AbstractController {
 
     public function add(): void {
         if ($this->isConnected()) {
-            if ($_SESSION['nb_demandes'] < $_SESSION['nb_offres']) {
+            if ($_SESSION['ratio'] >= 0) {
                 if (!empty($_POST)) {
                     $this->checkPost();
                     if (preg_match('/^[A-Z0-9_]+$/', $_POST['reference'])) {
                         $this->loadModel('demand');
                         if (DemandModel::addDemand($_SESSION['mail'], $_POST['reference'], date('Y-m-d H:i:s'))) {
-                            $this->updateSession(['nb_demandes' => $_SESSION['nb_demandes'] + 1]);
                             header("Location: /historia/demand/index?lang={$GLOBALS['i18n']}");
                         } else {
                             echo 'Vous ne pouvez pas déposer plus d\'une demande pour une même archive';
@@ -33,7 +32,7 @@ class DemandController extends AbstractController {
                     http_response_code(400);
                 }
             } else {
-                echo 'Votre ratio doit être supérieur à 1 pour pouvoir déposer une demande';
+                echo 'Votre ratio doit être >= 0 pour pouvoir déposer une demande';
             }
         } else {
             header("Location: /historia/user/connect?lang={$GLOBALS['i18n']}");
@@ -44,7 +43,6 @@ class DemandController extends AbstractController {
         if ($this->isConnected()) {
             $this->loadModel('demand');
             if (DemandModel::deleteDemand($_SESSION['mail'], $reference)) {
-                $this->updateSession(['nb_demandes' => $_SESSION['nb_demandes'] - 1]);
                 header("Location: /historia/demand/index?lang={$GLOBALS['i18n']}");
             } else {
                 echo 'Vous ne pouvez pas supprimer cette demande puisque vous ne la possédez pas';

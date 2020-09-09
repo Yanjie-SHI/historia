@@ -23,7 +23,8 @@ class SharingModel extends MyPDO {
 
     public static function doSharing(string $mail, string $token): void {
         $myPDO = self::getMyPDO();
-        $myPDO->exec("UPDATE utilisateur SET u_nb_offres = u_nb_offres + 1 WHERE u_mail = '$mail'");
+        // mon_ratio += nb de pages de l'archive
+        // son_ratio -= nb de pages de l'archive
         $myPDO->exec("DELETE FROM demande WHERE d_jeton = '$token'");
     }
 
