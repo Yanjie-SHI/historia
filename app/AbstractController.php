@@ -49,4 +49,13 @@ abstract class AbstractController {
         }
     }
 
+    protected function regex(string $regex, string $message, array $subjects): void {
+        foreach ($subjects as $subject) {
+            if (!preg_match($regex, $subject)) {
+                echo $message;
+                exit;
+            }
+        }
+    }
+
 }

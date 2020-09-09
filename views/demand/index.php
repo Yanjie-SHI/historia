@@ -9,6 +9,14 @@
             </div>
             <br>
             <div>
+                <input type="text" name="centre" placeholder="<?= $GLOBALS['lang']['center'] ?>*" required>
+            </div>
+            <br>
+            <div>
+                <textarea name="description" cols="100" rows="10" required><?= $GLOBALS['lang']['demand_index_textarea_1'] ?></textarea>
+            </div>
+            <br>
+            <div>
                 <input type="submit" value="<?= $GLOBALS['lang']['ask'] ?>">
             </div>
             <br>
@@ -25,6 +33,8 @@
         <tr>
             <th><?= $GLOBALS['lang']['date'] ?></th>
             <th><?= $GLOBALS['lang']['archive'] ?></th>
+            <th><?= $GLOBALS['lang']['center'] ?></th>
+            <th><?= $GLOBALS['lang']['description'] ?></th>
             <th><?= $GLOBALS['lang']['delete'] ?></th>
         </tr>
     </thead>
@@ -36,6 +46,12 @@
             </td>
             <td>
                 <center><?= $demande['d_fk_archive_reference'] ?></center>
+            </td>
+            <td>
+                <center><?= $demande['d_centre'] ?></center>
+            </td>
+            <td>
+                <center><?= $demande['d_description'] ?></center>
             </td>
             <td>
                 <center>
@@ -51,6 +67,8 @@
         <tr>
             <th><?= $GLOBALS['lang']['date'] ?></th>
             <th><?= $GLOBALS['lang']['archive'] ?></th>
+            <th><?= $GLOBALS['lang']['center'] ?></th>
+            <th><?= $GLOBALS['lang']['description'] ?></th>
             <th><?= $GLOBALS['lang']['delete'] ?></th>
         </tr>
     </tfoot>    

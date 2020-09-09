@@ -3,7 +3,7 @@
 class DemandModel extends MyPDO {
 
     public static function readDemand(string $mail): array {
-        $req = "SELECT d_fk_archive_reference, d_datetime_demande "
+        $req = "SELECT d_fk_archive_reference, d_description, d_centre, d_datetime_demande "
                 . "FROM demande "
                 . "WHERE d_fk_utilisateur_mail = '$mail' "
                 . "ORDER BY d_datetime_demande DESC";
@@ -11,11 +11,11 @@ class DemandModel extends MyPDO {
         return $result_set->fetchAll();
     }
 
-    public static function addDemand(string $mail, string $reference, string $date): bool {
+    public static function addDemand(string $mail, string $reference, string $description, string $centre, string $date): bool {
         if (self::checkDemand($mail, $reference) == 0) {
             $token = self::generateToken('demande');
             self::getMyPDO()->exec("INSERT INTO archive VALUES ('$reference')");
-            self::getMyPDO()->exec("INSERT INTO demande VALUES ('$mail', '$reference', '$token', '$date')");
+            self::getMyPDO()->exec("INSERT INTO demande VALUES ('$mail', '$reference', '$description', '$centre', '$token', '$date')");
             return true;
         } else {
             return false;

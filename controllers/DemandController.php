@@ -18,15 +18,20 @@ class DemandController extends AbstractController {
             if ($_SESSION['ratio'] >= 0) {
                 if (!empty($_POST)) {
                     $this->checkPost();
-                    if (preg_match('/^[A-Z0-9_]+$/', $_POST['reference'])) {
-                        $this->loadModel('demand');
-                        if (DemandModel::addDemand($_SESSION['mail'], $_POST['reference'], date('Y-m-d H:i:s'))) {
-                            header("Location: /historia/demand/index?lang={$GLOBALS['i18n']}");
-                        } else {
-                            echo 'Vous ne pouvez pas déposer plus d\'une demande pour une même archive';
-                        }
+                    $message = 'La référence et le centre n\'autorisent que les caractères numériques, les lettres majuscules et les underscore';
+                    $this->regex('/^[A-Z0-9_]+$/', $message, [
+                        $_POST['reference'],
+                        $_POST['centre']
+                    ]);
+                    $message = 'La description doit faire entre 25 et 255 caractères';
+                    $this->regex('/^.{25,255}$/', $message, [
+                        $_POST['description']
+                    ]);
+                    $this->loadModel('demand');
+                    if (DemandModel::addDemand($_SESSION['mail'], $_POST['reference'], $_POST['description'], $_POST['centre'], date('Y-m-d H:i:s'))) {
+                        header("Location: /historia/demand/index?lang={$GLOBALS['i18n']}");
                     } else {
-                        echo 'Seuls les caractères numériques, les lettres majuscules et les underscore sont autorisés pour les références d\'archives';
+                        echo 'Vous ne pouvez pas déposer plus d\'une demande pour une même archive';
                     }
                 } else {
                     http_response_code(400);
