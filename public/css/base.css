@@ -15,3 +15,6 @@ li > a {
 #menu {
     width: 20%;
 }
+.optgroup-header {
+    font-weight: bold;
+}

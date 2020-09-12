@@ -2,11 +2,13 @@
     <head>
         <meta charset="utf-8">
         <title><?= $title ?></title>
-        <link rel="stylesheet" href="/historia/public/css/jquery-ui.min.css">
-        <link rel="stylesheet" href="/historia/public/css/base.css">
-        <script src="/historia/public/js/jquery-3.5.1.min.js"></script>
-        <script src="/historia/public/js/jquery-ui.min.js"></script>
-        <script src="/historia/public/js/base.js"></script>
+        <link rel="stylesheet" type="text/css" href="/historia/public/css/jquery-ui.min.css">
+        <link rel="stylesheet" type="text/css" href="/historia/public/css/selectize.css">
+        <link rel="stylesheet" type="text/css" href="/historia/public/css/base.css">
+        <script type="text/javascript" src="/historia/public/js/jquery-3.5.1.min.js"></script>
+        <script type="text/javascript" src="/historia/public/js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/historia/public/js/selectize.min.js"></script>
+        <script type="text/javascript" src="/historia/public/js/base.js"></script>
     </head>
     <body>
         <center>
