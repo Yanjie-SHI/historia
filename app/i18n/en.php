@@ -39,5 +39,7 @@ $lang = [
     'ratio' => 'Ratio',
     'center' => 'Center',
     'description' => 'Description',
-    'demand_index_textarea_1' => 'Description of your demand (between 25 and 255 characters)'
+    'demand_index_textarea_1' => 'Description of your demand (between 100 and 1020 characters)',
+    'show' => 'Show',
+    'hide' => 'Hide'
 ];

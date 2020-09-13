@@ -8,18 +8,18 @@
         <script type="text/javascript" src="/historia/public/js/jquery-3.5.1.min.js"></script>
         <script type="text/javascript" src="/historia/public/js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="/historia/public/js/selectize.min.js"></script>
+        <script type="text/javascript" src="/historia/public/ckeditor/ckeditor.js"></script>
+        <script type="text/javascript" src="/historia/public/ckeditor/adapters/jquery.js"></script>
         <script type="text/javascript" src="/historia/public/js/base.js"></script>
     </head>
     <body>
         <center>
             <form>
-                <div class="controlgroup">
-                    <select name="lang">
-                        <option value="fr" <?php if ($GLOBALS['i18n'] == 'fr') : ?> selected <?php endif; ?> >Français</option>
-                        <option value="en" <?php if ($GLOBALS['i18n'] == 'en') : ?> selected <?php endif; ?> >English</option>
-                    </select>
-                    <input type="submit" value="<?= $GLOBALS['lang']['translate'] ?>">
-                </div>
+                <select name="lang" class="selectmenu">
+                    <option value="fr" <?php if ($GLOBALS['i18n'] == 'fr') : ?> selected <?php endif; ?> >Français</option>
+                    <option value="en" <?php if ($GLOBALS['i18n'] == 'en') : ?> selected <?php endif; ?> >English</option>
+                </select>
+                <input type="submit" value="<?= $GLOBALS['lang']['translate'] ?>">
             </form>
         </center>
         <?php if ($this->isConnected()) : ?>
@@ -28,7 +28,7 @@
                 <p><?= $GLOBALS['lang']['ratio'] . ' : <b>' . $_SESSION['ratio'] . '</b> point(s)' ?></p>
             </div>
         <?php endif; ?>
-        <ul id="menu">
+        <ul class="menu">
             <div>
                 <li>
                     <a href="/historia?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['home'] ?></a>

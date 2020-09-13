@@ -12,7 +12,7 @@ body {
 li > a {
     text-decoration: none;
 }
-#menu {
+.menu {
     width: 20%;
 }
 .optgroup-header {

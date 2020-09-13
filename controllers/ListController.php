@@ -7,23 +7,7 @@ class ListController extends AbstractController {
             $this->loadModel('list');
             $this->loadModel('center');
             $archives = ListModel::readArchive($_SESSION['mail']);
-            $types = [
-                'Communes',
-                'Archives départementales',
-                'Entreprises',
-                'Etablissements hospitaliers et de santé',
-                'Institutions, établissements ou associations',
-                'Présidence de la République et Ministères',
-                'Services à compétence nationale',
-                'Organismes liés aux archives ou organismes internationaux',
-                'Assemblées parlementaires ou hautes juridictions',
-                'Conseils régionaux',
-                'Rectorats, universités ou établissements d\\\'enseignement supérieur',
-                'Conseillers archives en DRAC',
-                'Service interministériel'
-            ];
-            sort($types);
-            $centres = CenterModel::readCenter($types);
+            $centres = CenterModel::readCenter();
             $this->render('index', compact('archives', 'centres'));
         } else {
             header("Location: /historia/user/connect?lang={$GLOBALS['i18n']}");

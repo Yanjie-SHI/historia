@@ -8,8 +8,8 @@
             </div>
             <br>
             <div>
-                <label for="centre"><?= $GLOBALS['lang']['center'] ?>*</label>
-                <select name="centre" id="centre" required>
+                <label for="center"><?= $GLOBALS['lang']['center'] ?>*</label>
+                <select name="centre" class="selectize" id="center" required>
                 <?php foreach ($centres as $centre) : ?>
                     <optgroup label="<?= $centre[0]['c_type'] . ' [' . count($centre) . ']' ?>">
                     <?php foreach ($centre as $value) : ?>

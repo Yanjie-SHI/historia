@@ -5,9 +5,11 @@ class DemandController extends AbstractController {
     public function index(): void {
         if ($this->isConnected()) {
             $this->loadModel('demand');
+            $this->loadModel('center');
             $demandes = DemandModel::readDemand($_SESSION['mail']);
             $this->deleteTime($demandes);
-            $this->render('index', compact('demandes'));
+            $centres = CenterModel::readCenter();
+            $this->render('index', compact('demandes', 'centres'));
         } else {
             header("Location: /historia/user/connect?lang={$GLOBALS['i18n']}");
         }
@@ -18,13 +20,8 @@ class DemandController extends AbstractController {
             if ($_SESSION['ratio'] >= 0) {
                 if (!empty($_POST)) {
                     $this->checkPost();
-                    $message = 'La référence et le centre n\'autorisent que les caractères numériques, les lettres majuscules et les underscore';
-                    $this->regex('/^[A-Z0-9_]+$/', $message, [
-                        $_POST['reference'],
-                        $_POST['centre']
-                    ]);
-                    $message = 'La description doit faire entre 25 et 255 caractères';
-                    $this->regex('/^.{25,255}$/', $message, [
+                    $message = 'La description doit faire entre 100 et 1020 caractères. La vôtre en fait actuellement ' . strlen($_POST['description']);
+                    $this->regex('/^.{100,1023}$/s', $message, [
                         $_POST['description']
                     ]);
                     $this->loadModel('demand');
@@ -44,14 +41,11 @@ class DemandController extends AbstractController {
         }
     }
 
-    public function delete(string $reference): void {
+    public function delete(string $jeton): void {
         if ($this->isConnected()) {
             $this->loadModel('demand');
-            if (DemandModel::deleteDemand($_SESSION['mail'], $reference)) {
-                header("Location: /historia/demand/index?lang={$GLOBALS['i18n']}");
-            } else {
-                echo 'Vous ne pouvez pas supprimer cette demande puisque vous ne la possédez pas';
-            }
+            DemandModel::deleteDemand($jeton);
+            header("Location: /historia/demand/index?lang={$GLOBALS['i18n']}");
         } else {
             header("Location: /historia/user/connect?lang={$GLOBALS['i18n']}");
         }
