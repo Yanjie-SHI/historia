@@ -7,7 +7,7 @@ th, td {
 }
 body {
     background-color: silver;
-    font-family: "Trebuchet MS", sans-serif;
+    font-family: Trebuchet MS, sans-serif;
 }
 li > a {
     text-decoration: none;

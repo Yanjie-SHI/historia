@@ -47,9 +47,9 @@ class ListModel extends MyPDO {
         $size = count($rows);
         for ($i = 0; $i < $size; $i++) {
             if ($i < $size - 1) {
-                $archives .= self::getMyPDO()->quote($rows[$i]['p_fk_archive_reference']) . ', ';
+                $archives .= self::getMyPDO()->quote($rows[$i]['a_reference']) . ', ';
             } else {
-                $archives .= self::getMyPDO()->quote($rows[$i]['p_fk_archive_reference']);
+                $archives .= self::getMyPDO()->quote($rows[$i]['a_reference']);
             }
         }
         if (strlen($archives) > 0) {

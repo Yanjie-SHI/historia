@@ -23,12 +23,17 @@ class SharingController extends AbstractController {
                 http_response_code(400);
                 exit;
             }
-            if (!empty($_FILES)) {
-                $this->checkFiles();
-                $this->sendMail($sharing[0]);
-                SharingModel::doSharing($_SESSION['mail'], $sharing[0]['d_jeton']);
-                // mon_ratio += nb de pages de l'archive
-                // son_ratio -= nb de pages de l'archive
+            if (!empty($_POST)) {
+                $this->checkPost();
+                $message = 'Votre lien n\'est pas un lien WeTransfer valide';
+                $this->regex('/^https:\/\/we.tl\/t-[a-zA-Z0-9]{10}$/', $message, [
+                    $_POST['lien']
+                ]);
+                $this->sendMail($sharing[0], $_POST['lien'], $_POST['nombre_de_pages']);
+                SharingModel::doSharing($_SESSION['mail'], $sharing[0]['u_mail'], $sharing[0]['d_jeton'], $_POST['nombre_de_pages']);
+                $this->updateSession([
+                    'ratio' => $_SESSION['ratio'] + $_POST['nombre_de_pages']
+                ]);
                 header("Location: /historia?lang={$GLOBALS['i18n']}");
             } else {
                 $this->deleteTime($sharing);
@@ -39,25 +44,8 @@ class SharingController extends AbstractController {
         }
     }
 
-    private function checkFiles(): void {
-        if ($_FILES['archive']['error'] != 0) {
-            echo 'Une erreur est survenue pendant le chargement de votre archive, veuillez réessayer';
-            exit;
-        }
-        if ($_FILES['archive']['type'] != 'application/pdf') {
-            echo 'On n\'accepte que les archives au format .pdf';
-            exit;
-        }
-        if ($_FILES['archive']['size'] > 20_971_520) {
-            echo 'Votre archive est trop volumineuse. '
-            . 'Veuillez la compresser sur <a href="https://www.ilovepdf.com/fr/compresser_pdf" target="_blank">iLovePDF</a> '
-            . 'avec le niveau de compression suffisant pour qu\'elle puisse être chargée';
-            exit;
-        }
-    }
-
-    private function sendMail(array $sharing): void {
-        $subject = "[{$sharing['d_fk_archive_reference']}] Demande satisfaite";
+    private function sendMail(array $sharing, string $link, string $number_pages): void {
+        $subject = 'Demande satisfaite';
         $body = <<<HTML
                 <html>
                     <body>
@@ -65,7 +53,13 @@ class SharingController extends AbstractController {
                             <h1>$subject</h1>
                         </center>
                         <p>Bonjour {$sharing['u_pseudo']},</p>
-                        <p>Votre demande pour l'archive <b>{$sharing['d_fk_archive_reference']}</b> est satisfaite.</p>
+                        <p>Votre demande pour l'archive <mark>{$sharing['a_reference']}</mark> à <mark>{$sharing['c_nom']}</mark> est satisfaite :</p>
+                        <ul>
+                            <li>Lien WeTransfer :
+                                <a href="$link">$link</a>
+                            </li>
+                            <li>Nombre de pages : $number_pages</li>
+                        </ul>
                         <p>Si ce partage est abusif, vous pouvez le signaler en cliquant sur ce
                             <a href="http://localhost/historia/user/strike/{$_SESSION['jeton']}?lang={$GLOBALS['i18n']}">lien</a>.
                         </p>
@@ -76,9 +70,7 @@ class SharingController extends AbstractController {
 HTML;
         $message = (new Swift_Message($subject, $body, 'text/html', 'utf-8'))
                 ->setFrom(['contact.historia.42@gmail.com' => 'Historia'])
-                ->setTo($sharing['u_mail'])
-                ->attach(Swift_Attachment::fromPath($_FILES['archive']['tmp_name'])
-                ->setFilename($_FILES['archive']['name']));
+                ->setTo($sharing['u_mail']);
         $smtp_transport = (new Swift_SmtpTransport('smtp.gmail.com', 587, 'tls'))
                 ->setUsername('contact.historia.42@gmail.com')
                 ->setPassword('<Xv74Vu%2w');

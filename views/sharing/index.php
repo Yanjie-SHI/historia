@@ -6,7 +6,7 @@
     <thead>
         <th><?= $GLOBALS['lang']['date'] ?></th>
         <th><?= $GLOBALS['lang']['archive'] ?></th>
-        <th><?= $GLOBALS['lang']['user'] ?></th>
+        <th><?= $GLOBALS['lang']['center'] ?></th>
         <th><?= $GLOBALS['lang']['share'] ?></th>
     </thead>
     <tbody>
@@ -16,10 +16,12 @@
                 <center><?= $sharing['d_datetime_demande'] ?></center>
             </td>
             <td>
-                <center><?= $sharing['d_fk_archive_reference'] ?></center>
+                <center><?= $sharing['a_reference'] ?></center>
             </td>
             <td>
-                <center><?= $sharing['u_pseudo'] ?></center>
+                <center>
+                    <a href="<?= $sharing['c_url'] ?>"><?= $sharing['c_nom'] ?></a>
+                </center>
             </td>
             <td>
                 <center>
@@ -34,7 +36,7 @@
     <tfoot>
         <th><?= $GLOBALS['lang']['date'] ?></th>
         <th><?= $GLOBALS['lang']['archive'] ?></th>
-        <th><?= $GLOBALS['lang']['user'] ?></th>
+        <th><?= $GLOBALS['lang']['center'] ?></th>
         <th><?= $GLOBALS['lang']['share'] ?></th>
     </tfoot>
 </table>
