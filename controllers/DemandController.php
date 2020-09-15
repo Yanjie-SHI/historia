@@ -20,21 +20,27 @@ class DemandController extends AbstractController {
             if ($_SESSION['ratio'] >= 0) {
                 if (!empty($_POST)) {
                     $this->checkPost();
-                    $message = 'La description doit faire entre 100 et 1020 caractères. La vôtre en fait actuellement ' . strlen($_POST['description']);
-                    $this->regex('/^.{100,1023}$/s', $message, [
+                    $match = $this->regex('/^.{100,1023}$/s', [
                         $_POST['description']
                     ]);
+                    if (!$match) {
+                        $this->index();
+                        $this->dialog('La description doit faire entre 100 et 1020 caractères. La vôtre en fait actuellement ' . strlen($_POST['description']));
+                        exit;
+                    }
                     $this->loadModel('demand');
                     if (DemandModel::addDemand($_SESSION['mail'], $_POST['reference'], $_POST['description'], $_POST['centre'], date('Y-m-d H:i:s'))) {
                         header("Location: /historia/demand/index?lang={$GLOBALS['i18n']}");
                     } else {
-                        echo 'Vous ne pouvez pas déposer plus d\'une demande pour une même archive';
+                        $this->index();
+                        $this->dialog('Vous ne pouvez pas déposer plus d\'une demande pour une même archive');
                     }
                 } else {
                     http_response_code(400);
                 }
             } else {
-                echo 'Votre ratio doit être >= 0 pour pouvoir déposer une demande';
+                $this->index();
+                $this->dialog('Votre ratio doit être >= 0 pour pouvoir déposer une demande');
             }
         } else {
             header("Location: /historia/user/connect?lang={$GLOBALS['i18n']}");

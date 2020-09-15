@@ -14,4 +14,5 @@ $(document).ready(function () {
     $(".hide").on("click", function () {
         $(".description").hide();
     });
+    $(".dialog").dialog();
 });

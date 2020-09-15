@@ -19,24 +19,28 @@ class SharingController extends AbstractController {
         if ($this->isConnected()) {
             $this->loadModel('sharing');
             $sharing = SharingModel::getSharing($token);
+            $this->deleteTime($sharing);
             if (empty($sharing)) {
                 http_response_code(400);
                 exit;
             }
             if (!empty($_POST)) {
                 $this->checkPost();
-                $message = 'Votre lien n\'est pas un lien WeTransfer valide';
-                $this->regex('/^https:\/\/we.tl\/t-[a-zA-Z0-9]{10}$/', $message, [
+                $match = $this->regex('/^https:\/\/we.tl\/t-[a-zA-Z0-9]{10}$/', [
                     $_POST['lien']
                 ]);
-                $this->sendMail($sharing[0], $_POST['lien'], $_POST['nombre_de_pages']);
+                if (!$match) {
+                    $this->render('share', compact('sharing'));
+                    $this->dialog('Votre lien n\'est pas un lien WeTransfer valide');
+                    exit;
+                }
+                $this->sendMail($sharing[0]);
                 SharingModel::doSharing($_SESSION['mail'], $sharing[0]['u_mail'], $sharing[0]['d_jeton'], $_POST['nombre_de_pages']);
                 $this->updateSession([
                     'ratio' => $_SESSION['ratio'] + $_POST['nombre_de_pages']
                 ]);
                 header("Location: /historia?lang={$GLOBALS['i18n']}");
             } else {
-                $this->deleteTime($sharing);
                 $this->render('share', compact('sharing'));
             }
         } else {
@@ -44,7 +48,7 @@ class SharingController extends AbstractController {
         }
     }
 
-    private function sendMail(array $sharing, string $link, string $number_pages): void {
+    private function sendMail(array $sharing): void {
         $subject = 'Demande satisfaite';
         $body = <<<HTML
                 <html>
@@ -56,9 +60,9 @@ class SharingController extends AbstractController {
                         <p>Votre demande pour l'archive <mark>{$sharing['a_reference']}</mark> à <mark>{$sharing['c_nom']}</mark> est satisfaite :</p>
                         <ul>
                             <li>Lien WeTransfer :
-                                <a href="$link">$link</a>
+                                <a href="{$_POST['lien']}">{$_POST['lien']}</a>
                             </li>
-                            <li>Nombre de pages : $number_pages</li>
+                            <li>Nombre de pages : {$_POST['nombre_de_pages']}</li>
                         </ul>
                         <p>Si ce partage est abusif, vous pouvez le signaler en cliquant sur ce
                             <a href="http://localhost/historia/user/strike/{$_SESSION['jeton']}?lang={$GLOBALS['i18n']}">lien</a>.

@@ -8,23 +8,23 @@ class UserModel extends MyPDO {
         return compact('token', 'number_rows');
     }
 
-    public static function validateUser(string $token): void {
+    public static function validateUser(string $token): string {
         if (self::checkToken($token, 'utilisateur')) {
             $result_set = self::getMyPDO()->query("SELECT u_etat FROM utilisateur WHERE u_jeton = '$token'");
             $user = $result_set->fetch();
             switch ($user['u_etat']) {
                 case 'C':
                     self::getMyPDO()->exec("UPDATE utilisateur SET u_etat = 'V' WHERE u_jeton = '$token'");
-                    echo 'Votre compte vient d\'être confirmé';
+                    return 'Votre compte vient d\'être confirmé';
                     break;
                 case 'V':
-                    echo 'Votre comtpe est déjà confirmé';
+                    return 'Votre comtpe est déjà confirmé';
                     break;
                 case 'B':
-                    echo 'Votre compte est bloqué !';
+                    return 'Votre compte est bloqué !';
             }
         } else {
-            echo 'Confirmation de votre compte impossible : identifiant invalide';
+            return 'Confirmation de votre compte impossible : identifiant invalide';
         }
     }
 
@@ -40,21 +40,18 @@ class UserModel extends MyPDO {
                 case 'V':
                     return $user;
                 case 'C':
-                    echo 'Vous devez d\'abord confirmer votre compte avant de pouvoir vous y connecter.<br>'
-                    . 'Confirmez-le en cliquant sur le lien contenu dans le mail que vous avez reçu à l\'adresse indiquée pendant l\'inscription';
-                    exit;
+                    return ['Vous devez d\'abord confirmer votre compte avant de pouvoir vous y connecter.<br>'
+                        . 'Confirmez-le en cliquant sur le lien contenu dans le mail que vous avez reçu à l\'adresse indiquée pendant l\'inscription'];
                 case 'B':
                     if (date('Y-m-d H:i:s') >= $user['s_datetime_fin']) {
                         self::getMyPDO()->exec("UPDATE utilisateur SET u_etat = 'V' WHERE u_mail = '$mail'");
                         return $user;
                     } else {
-                        echo "Votre compte est bloqué jusqu'au {$user['s_datetime_fin']} pour partage abusif";
-                        exit;
+                        return ["Votre compte est bloqué jusqu'au {$user['s_datetime_fin']} pour partage abusif"];
                     }
             }
         } else {
-            echo 'Vos identifiants sont incorrects';
-            exit;
+            return ['Vos identifiants sont incorrects'];
         }
     }
 

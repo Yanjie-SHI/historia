@@ -13,12 +13,14 @@ class UserController extends AbstractController {
                                 $_POST['pseudo']
                 );
                 extract($data);
+                $this->render('create');
                 if ($number_rows == 1) {
                     $this->sendMail($token);
-                    echo 'La création de votre compte a réussi.<br>'
-                    . 'Confirmez-le en cliquant sur le lien contenu dans le mail que vous avez reçu à l\'adresse indiquée pendant l\'inscription';
+                    $message = 'La création de votre compte a réussi.<br>'
+                            . 'Confirmez-le en cliquant sur le lien contenu dans le mail que vous avez reçu à l\'adresse indiquée pendant l\'inscription';
+                    $this->dialog($message);
                 } else {
-                    echo 'La création de votre compte a échoué';
+                    $this->dialog('La création de votre compte a échoué');
                 }
             } else {
                 $this->render('create');
@@ -44,7 +46,9 @@ class UserController extends AbstractController {
 
     public function validate(string $token): void {
         $this->loadModel('user');
-        UserModel::validateUser($token);
+        $message = UserModel::validateUser($token);
+        $this->connect();
+        $this->dialog($message);
     }
 
     public function connect(): void {
@@ -53,8 +57,14 @@ class UserController extends AbstractController {
                 $this->checkPost();
                 $this->loadModel('user');
                 $user = UserModel::connectUser($_POST['mail'], $_POST['mot_de_passe']);
-                $this->initSession($user['u_mail'], $user['u_pseudo'], $user['u_ratio'], $user['u_jeton']);
-                header("Location: /historia?lang={$GLOBALS['i18n']}");
+                if (count($user) > 1) {
+                    $this->initSession($user['u_mail'], $user['u_pseudo'], $user['u_ratio'], $user['u_jeton']);
+                    header("Location: /historia?lang={$GLOBALS['i18n']}");
+                } else {
+                    $message = $user[0];
+                    $this->render('connect');
+                    $this->dialog($message);
+                }
             } else {
                 $this->render('connect');
             }
@@ -72,9 +82,8 @@ class UserController extends AbstractController {
     }
 
     private function sendMail(string $token): void {
-        $to = $_POST['mail'];
         $subject = 'Confirmation de votre compte';
-        $message = <<<HTML
+        $body = <<<HTML
                     <html>
                         <body>
                             <center>
@@ -90,12 +99,14 @@ class UserController extends AbstractController {
                         </body>
                     </html>
 HTML;
-        $additional_headers = [
-            'MIME-Version' => '1.0',
-            'Content-type' => 'text/html; charset=utf-8',
-            'From' => 'Historia <contact.historia.42@gmail.com>'
-        ];
-        mail($to, $subject, $message, $additional_headers);
+        $message = (new Swift_Message($subject, $body, 'text/html', 'utf-8'))
+                ->setFrom(['contact.historia.42@gmail.com' => 'Historia'])
+                ->setTo($_POST['mail']);
+        $smtp_transport = (new Swift_SmtpTransport('smtp.gmail.com', 587, 'tls'))
+                ->setUsername('contact.historia.42@gmail.com')
+                ->setPassword('<Xv74Vu%2w');
+        $mailer = new Swift_Mailer($smtp_transport);
+        $mailer->send($message);
     }
 
 }

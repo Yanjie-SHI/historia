@@ -22,7 +22,8 @@ class ListController extends AbstractController {
                 if (ListModel::addArchive($_SESSION['mail'], $_POST['reference'], $_POST['centre'])) {
                     header("Location: /historia/list/index?lang={$GLOBALS['i18n']}");
                 } else {
-                    echo 'Impossible d\'ajouter l\'archive, vous la possédez déjà';
+                    $this->index();
+                    $this->dialog('Impossible d\'ajouter l\'archive, vous la possédez déjà');
                 }
             } else {
                 http_response_code(400);

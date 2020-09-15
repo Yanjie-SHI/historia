@@ -49,13 +49,21 @@ abstract class AbstractController {
         }
     }
 
-    protected function regex(string $regex, string $message, array $subjects): void {
+    protected function regex(string $regex, array $subjects): bool {
         foreach ($subjects as $subject) {
             if (!preg_match($regex, $subject)) {
-                echo $message;
-                exit;
+                return false;
             }
         }
+        return true;
+    }
+
+    protected function dialog(string $message): void {
+        echo <<<HTML
+                <div class="dialog">
+                    $message
+                </div>
+HTML;
     }
 
 }
