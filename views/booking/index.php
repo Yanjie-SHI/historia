@@ -1,6 +1,6 @@
-<?php $title = $GLOBALS['lang']['sharing_index_title'] ?>
+<?php $title = $GLOBALS['lang']['booking_index_title'] ?>
 
-<p><?php printf($GLOBALS['lang']['total'], count($sharings)) ?></p>
+<p><?php printf($GLOBALS['lang']['total'], count($bookings)) ?></p>
 
 <table>
     <thead>
@@ -8,27 +8,27 @@
             <th><?= $GLOBALS['lang']['date'] ?></th>
             <th><?= $GLOBALS['lang']['quote'] ?></th>
             <th><?= $GLOBALS['lang']['center'] ?></th>
-            <th><?= $GLOBALS['lang']['share'] ?></th>
+            <th><?= $GLOBALS['lang']['book'] ?></th>
         </tr>
     </thead>
     <tbody>
-    <?php foreach ($sharings as $sharing) : ?>
+    <?php foreach ($bookings as $booking) : ?>
         <tr>
             <td>
-                <center><?= $sharing['d_datetime_demande'] ?></center>
+                <center><?= $booking['d_datetime_demande'] ?></center>
             </td>
             <td>
-                <center><?= $sharing['a_reference'] ?></center>
+                <center><?= $booking['a_reference'] ?></center>
             </td>
             <td>
                 <center>
-                    <a href="<?= $sharing['c_url'] ?>"><?= $sharing['c_nom'] ?></a>
+                    <a href="<?= $booking['c_url'] ?>"><?= $booking['c_nom'] ?></a>
                 </center>
             </td>
             <td>
                 <center>
-                    <a href="/historia/sharing/share/<?= $sharing['d_jeton'] . "?lang={$GLOBALS['i18n']}" ?>">
-                        <img src="/historia/public/img/share.png" alt="<?= $GLOBALS['lang']['share'] ?>">
+                    <a href="/historia/booking/book/<?= $booking['d_jeton'] . "?lang={$GLOBALS['i18n']}" ?>">
+                        <img src="/historia/public/img/book.png" alt="<?= $GLOBALS['lang']['book'] ?>">
                     </a>
                 </center>
             </td>
@@ -40,7 +40,7 @@
             <th><?= $GLOBALS['lang']['date'] ?></th>
             <th><?= $GLOBALS['lang']['quote'] ?></th>
             <th><?= $GLOBALS['lang']['center'] ?></th>
-            <th><?= $GLOBALS['lang']['share'] ?></th>
+            <th><?= $GLOBALS['lang']['book'] ?></th>
         </tr>
     </tfoot>
 </table>

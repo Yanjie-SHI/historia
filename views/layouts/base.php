@@ -29,43 +29,89 @@
             </div>
         <?php endif; ?>
         <ul class="menu">
-            <div>
-                <li>
+            <li>
+                <div>
                     <a href="/historia?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['home'] ?></a>
-                </li>
-            </div>
+                </div>
+            </li>
         <?php if ($this->isConnected()) : ?>
-            <div>
-                <li>
-                    <a href="/historia/list/index?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['list_index_title'] ?></a>
-                </li>
-            </div>
-            <div>
-                <li>
-                    <a href="/historia/demand/index?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['demand_index_title'] ?></a>
-                </li>
-            </div>
-            <div>
-                <li>
-                    <a href="/historia/sharing/index?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['sharing_index_title'] ?></a>
-                </li>
-            </div>
-            <div>
-                <li>
+            <li>
+                <div><?= $GLOBALS['lang']['list_index_title'] ?>
+                    <span style="float: right"><b>&gt;</b></span>
+                </div>
+                <ul>
+                    <li>
+                        <div>
+                            <a href="/historia/list/index?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['list_index_title'] ?></a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a href="/historia/list/add?lang=<?= $GLOBALS['i18n'] ?>"><?=  $GLOBALS['lang']['list_add_title'] ?></a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div><?= $GLOBALS['lang']['demand_index_title'] ?>
+                    <span style="float: right"><b>&gt;</b></span>
+                </div>
+                <ul>
+                    <li>
+                        <div>
+                            <a href="/historia/demand/index?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['demand_index_title'] ?></a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a href="/historia/demand/add?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['demand_add_title'] ?></a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div><?= $GLOBALS['lang']['book'] . ' / ' . $GLOBALS['lang']['share'] ?>
+                    <span style="float: right"><b>&gt;</b></span>
+                </div>
+                <ul>
+                    <li>
+                        <div>
+                            <a href="/historia/booking/index?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['booking_index_title'] ?></a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a href="/historia/sharing/index?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['sharing_index_title'] ?></a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a href="/historia/booking/list?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['booking_list_title'] ?></a>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <a href="/historia/booking/search?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['booking_search_title'] ?></a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div>
                     <a href="/historia/user/disconnect?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['logout'] ?></a>
-                </li>
-            </div>
+                </div>
+            </li>
         <?php else : ?>
-            <div>
-                <li>
+            <li>
+                <div>
                     <a href="/historia/user/create?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['signin'] ?></a>
-                </li>
-            </div>
-            <div>
-                <li>
+                </div>
+            </li>
+            <li>
+                <div>
                     <a href="/historia/user/connect?lang=<?= $GLOBALS['i18n'] ?>"><?= $GLOBALS['lang']['login'] ?></a>
-                </li>
-            </div>
+                </div>
+            </li>
         <?php endif; ?>
         </ul>
         <center>

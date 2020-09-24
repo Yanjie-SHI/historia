@@ -3,12 +3,12 @@
 class DemandModel extends MyPDO {
 
     public static function readDemand(string $mail): array {
-        $req = "SELECT d_description, a_reference, c_nom, c_url, d_jeton, d_datetime_demande "
+        $req = "SELECT d_description, a_reference, c_nom, c_url, d_jeton, d_datetime_demande, d_etat "
                 . "FROM demande "
                 . "JOIN archive ON d_fk_archive_identifiant = a_identifiant "
                 . "JOIN centre ON a_fk_centre_identifiant = c_identifiant "
                 . "WHERE d_fk_utilisateur_mail = '$mail' "
-                . "ORDER BY d_datetime_demande DESC";
+                . "ORDER BY d_etat, d_datetime_demande DESC";
         $result_set = self::getMyPDO()->query($req);
         return $result_set->fetchAll();
     }
@@ -18,7 +18,7 @@ class DemandModel extends MyPDO {
             $jeton = self::generateToken('demande');
             self::getMyPDO()->exec("INSERT INTO archive(a_reference, a_fk_centre_identifiant) VALUES ('$reference', $centre)");
             $identifiant = self::getMyPDO()->lastInsertId();
-            self::getMyPDO()->exec("INSERT INTO demande VALUES ('$mail', $identifiant, '$description', '$jeton', '$date')");
+            self::getMyPDO()->exec("INSERT INTO demande VALUES ('$jeton', '$mail', $identifiant, '$description', '$date', 'L')");
             return true;
         } else {
             return false;
@@ -36,6 +36,15 @@ class DemandModel extends MyPDO {
                 . "WHERE d_fk_utilisateur_mail = '$mail' AND a_reference = '$reference' AND a_fk_centre_identifiant = $centre";
         $result_set = self::getMyPDO()->query($req);
         return $result_set->rowCount();
+    }
+
+    public static function getUserToken(string $token): array {
+        $req = 'SELECT u_jeton '
+                . 'FROM demande '
+                . 'JOIN utilisateur ON d_fk_utilisateur_mail = u_mail '
+                . 'WHERE d_jeton = \'' . $token . '\'';
+        $result_set = self::getMyPDO()->query($req);
+        return $result_set->fetchAll();
     }
 
 }

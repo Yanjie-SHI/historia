@@ -1,92 +1,149 @@
 <?php $title = $GLOBALS['lang']['demand_index_title'] ?>
 
-<form action="/historia/demand/add?lang=<?= $GLOBALS['i18n'] ?>" method="post">
-    <fieldset>
-        <legend><?= $title ?></legend>
-        <div>
-            <input type="text" name="reference" placeholder="<?= $GLOBALS['lang']['reference'] ?>*" required>
-        </div>
-        <br>
-        <div>
-            <label for="center"><?= $GLOBALS['lang']['center'] ?>*</label>
-            <select name="centre" class="selectize" id="center" required>
-            <?php foreach ($centres as $centre) : ?>
-                <optgroup label="<?= $centre[0]['c_type'] . ' [' . count($centre) . ']' ?>">
-                <?php foreach ($centre as $value) : ?>
-                    <option value="<?= $value['c_identifiant'] ?>"><?= $value['c_nom'] ?></option>
-                <?php endforeach; ?>
-                </optgroup>
-            <?php endforeach; ?>
-            </select>
-        </div>
-        <br>
-        <div>
-            <textarea name="description" cols="100" rows="10" class="wysiwyg" required><?= $GLOBALS['lang']['demand_index_textarea_1'] ?></textarea>
-        </div>
-        <br>
-        <div>
-            <input type="submit" value="<?= $GLOBALS['lang']['ask'] ?>">
-        </div>
-        <br>
-        <div>
-            <input type="reset" value="<?= $GLOBALS['lang']['reset'] ?>">
-        </div>
-    </fieldset>
-</form>
-<br>
+<h2><?= $GLOBALS['lang']['free'] ?></h2>
 
 <table>
     <thead>
         <tr>
             <th><?= $GLOBALS['lang']['date'] ?></th>
-            <th><?= $GLOBALS['lang']['archive'] ?></th>
+            <th><?= $GLOBALS['lang']['quote'] ?></th>
             <th><?= $GLOBALS['lang']['center'] ?></th>
             <th><?= $GLOBALS['lang']['description'] ?>
-                <button class="show"><?= $GLOBALS['lang']['show'] ?></button>
-                <button class="hide"><?= $GLOBALS['lang']['hide'] ?></button>
+                <button class="show">
+                    <img src="/historia/public/img/show.png" alt="<?= $GLOBALS['lang']['show'] ?>">
+                </button>
+                <button class="hide">
+                    <img src="/historia/public/img/hide.png" alt="<?= $GLOBALS['lang']['hide'] ?>">
+                </button>
             </th>
             <th><?= $GLOBALS['lang']['delete'] ?></th>
         </tr>
     </thead>
     <tbody>
-    <?php foreach ($demandes as $demande) : ?>
+    <?php for ($i = 0; $i < count($demandes); $i++) : ?>
+        <?php if ($demandes[$i]['d_etat'] == 'L') : ?>
         <tr>
             <td>
-                <center><?= $demande['d_datetime_demande'] ?></center>
+                <center><?= $demandes[$i]['d_datetime_demande'] ?></center>
             </td>
             <td>
-                <center><?= $demande['a_reference'] ?></center>
+                <center><?= $demandes[$i]['a_reference'] ?></center>
             </td>
             <td>
                 <center>
-                    <a href="<?= $demande['c_url'] ?>"><?= $demande['c_nom'] ?></a>
+                    <a href="<?= $demandes[$i]['c_url'] ?>"><?= $demandes[$i]['c_nom'] ?></a>
                 </center>
             </td>
             <td>
-            <center>
-                <div class="description"><?= $demande['d_description'] ?></div>
-            </center>
+                <center>
+                    <div class="description"><?= $demandes[$i]['d_description'] ?></div>
+                </center>
             </td>
             <td>
                 <center>
-                    <a href="/historia/demand/delete/<?= $demande['d_jeton'] . "?lang={$GLOBALS['i18n']}" ?>">
+                    <a href="/historia/demand/delete/<?= $demandes[$i]['d_jeton'] . "?lang={$GLOBALS['i18n']}" ?>">
                         <img src="/historia/public/img/delete.png" alt="<?= $GLOBALS['lang']['delete'] ?>">
                     </a>
                 </center>
             </td>
         </tr>
-    <?php endforeach; ?>
+        <?php else : break ?>
+        <?php endif; ?>
+    <?php endfor ?>
     </tbody>
     <tfoot>
         <tr>
             <th><?= $GLOBALS['lang']['date'] ?></th>
-            <th><?= $GLOBALS['lang']['archive'] ?></th>
+            <th><?= $GLOBALS['lang']['quote'] ?></th>
             <th><?= $GLOBALS['lang']['center'] ?></th>
             <th><?= $GLOBALS['lang']['description'] ?>
-                <button class="show"><?= $GLOBALS['lang']['show'] ?></button>
-                <button class="hide"><?= $GLOBALS['lang']['hide'] ?></button>
+                <button class="show">
+                    <img src="/historia/public/img/show.png" alt="<?= $GLOBALS['lang']['show'] ?>">
+                </button>
+                <button class="hide">
+                    <img src="/historia/public/img/hide.png" alt="<?= $GLOBALS['lang']['hide'] ?>">
+                </button>
             </th>
             <th><?= $GLOBALS['lang']['delete'] ?></th>
         </tr>
-    </tfoot>    
+    </tfoot>
+</table>
+
+<h2><?= $GLOBALS['lang']['booked'] ?></h2>
+
+<table>
+    <thead>
+        <tr>
+            <th><?= $GLOBALS['lang']['date'] ?></th>
+            <th><?= $GLOBALS['lang']['quote'] ?></th>
+            <th><?= $GLOBALS['lang']['center'] ?></th>
+            <th><?= $GLOBALS['lang']['description'] ?>
+                <button class="show">
+                    <img src="/historia/public/img/show.png" alt="<?= $GLOBALS['lang']['show'] ?>">
+                </button>
+                <button class="hide">
+                    <img src="/historia/public/img/hide.png" alt="<?= $GLOBALS['lang']['hide'] ?>">
+                </button>
+            </th>
+            <th><?= $GLOBALS['lang']['deadline'] ?></th>
+            <th><?= $GLOBALS['lang']['cancel'] ?></th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php for (; $i < count($demandes); $i++) : ?>
+        <tr>
+            <td>
+                <center><?= $demandes[$i]['d_datetime_demande'] ?></center>
+            </td>
+            <td>
+                <center><?= $demandes[$i]['a_reference'] ?></center>
+            </td>
+            <td>
+                <center>
+                    <a href="<?= $demandes[$i]['c_url'] ?>"><?= $demandes[$i]['c_nom'] ?></a>
+                </center>
+            </td>
+            <td>
+                <center>
+                    <div class="description"><?= $demandes[$i]['d_description'] ?></div>
+                </center>
+            </td>
+            <td>
+                <center>
+                    <?php if (date('Y-m-d') > $demandes[$i]['r_date_reservation']) : ?>
+                        <span style="color: red"><?= $demandes[$i]['r_date_reservation'] ?></span>
+                    <?php else : ?>
+                        <span style="color: green"><?= $demandes[$i]['r_date_reservation'] ?></span>
+                    <?php endif; ?>
+                </center>
+            </td>
+            <td>
+                <center>
+                    <?php if (date('Y-m-d') > $demandes[$i]['r_date_reservation']) : ?>
+                         <a href="/historia/booking/delete/<?= $demandes[$i]['d_jeton'] . "?lang={$GLOBALS['i18n']}" ?>">
+                             <img src="/historia/public/img/delete.png" alt="<?= $GLOBALS['lang']['delete'] ?>">
+                         </a>
+                    <?php endif; ?>
+                 </center>
+            </td>
+        </tr>
+    <?php endfor; ?>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th><?= $GLOBALS['lang']['date'] ?></th>
+            <th><?= $GLOBALS['lang']['quote'] ?></th>
+            <th><?= $GLOBALS['lang']['center'] ?></th>
+            <th><?= $GLOBALS['lang']['description'] ?>
+                <button class="show">
+                    <img src="/historia/public/img/show.png" alt="<?= $GLOBALS['lang']['show'] ?>">
+                </button>
+                <button class="hide">
+                    <img src="/historia/public/img/hide.png" alt="<?= $GLOBALS['lang']['hide'] ?>">
+                </button>
+            </th>
+            <th><?= $GLOBALS['lang']['deadline'] ?></th>
+            <th><?= $GLOBALS['lang']['cancel'] ?></th>
+        </tr>
+    </tfoot>
 </table>

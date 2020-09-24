@@ -42,10 +42,10 @@ abstract class AbstractController {
         }
     }
 
-    protected function deleteTime(array &$demandes): void {
+    protected function deleteTime(array &$demandes, string $champ): void {
         for ($i = 0; $i < count($demandes); $i++) {
-            $datetime = explode(' ', $demandes[$i]['d_datetime_demande']);
-            $demandes[$i]['d_datetime_demande'] = $datetime[0];
+            $datetime = explode(' ', $demandes[$i][$champ]);
+            $demandes[$i][$champ] = $datetime[0];
         }
     }
 

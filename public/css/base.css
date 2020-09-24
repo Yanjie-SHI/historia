@@ -4,12 +4,16 @@ table {
 }
 th, td {
     border: 1px solid black;
+    color: black;
+    background-color: gold;
 }
 body {
-    background-color: silver;
+    background-image: url("/historia/public/img/background.png");
+    background-attachment: fixed;
     font-family: Trebuchet MS, sans-serif;
+    color: white;
 }
-li > a {
+li > div > a {
     text-decoration: none;
 }
 .menu {

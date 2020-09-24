@@ -30,19 +30,15 @@
 </table>
 <br>
 
-<form action="/historia/sharing/share/<?= $sharing[0]['d_jeton'] . "?lang={$GLOBALS['i18n']}" ?>" method="post">
+<form action="/historia/booking/book/<?= $sharing[0]['d_jeton'] . "?lang={$GLOBALS['i18n']}" ?>" method="post">
     <fieldset>
-        <legend><?= $GLOBALS['lang']['sharing_index_title'] ?></legend>
+        <legend><?= $GLOBALS['lang']['booking_index_title'] ?></legend>
         <div>
-            <input type="url" name="lien" placeholder="<?= $GLOBALS['lang']['link'] ?>" required>
+            <input type="text" name="date" class="datepicker" placeholder="<?= $GLOBALS['lang']['date'] ?>*" required>
         </div>
         <br>
         <div>
-            <input type="number" name="nombre_de_pages" placeholder="<?= $GLOBALS['lang']['number_pages'] ?>" required min="1">
-        </div>
-        <br>
-        <div>
-            <input type="submit" value="<?= $GLOBALS['lang']['share'] ?>*">
+            <input type="submit" value="<?= $GLOBALS['lang']['book'] ?>">
         </div>
         <br>
         <div>
@@ -50,11 +46,3 @@
         </div>
     </fieldset>
 </form>
-
-<p>*<?= $GLOBALS['lang']['sharing_share_p_1'] ?></p>
-
-<ul>
-    <li><?= $GLOBALS['lang']['sharing_share_li_1'] ?></li>
-    <li><?= $GLOBALS['lang']['sharing_share_li_2'] ?></li>
-    <li><?= $GLOBALS['lang']['sharing_share_li_3'] ?></li>
-</ul>

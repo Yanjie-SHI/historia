@@ -5,10 +5,10 @@ class SharingController extends AbstractController {
     public function index(): void {
         if ($this->isConnected()) {
             $this->loadModel('list');
-            $archives = ListModel::readArchive($_SESSION['mail'], true);
+            $archives = ListModel::readArchive($_SESSION['mail']);
             $this->loadModel('sharing');
-            $sharings = SharingModel::readSharing($_SESSION['mail'], $archives['references']);
-            $this->deleteTime($sharings);
+            $sharings = SharingModel::readSharing($_SESSION['mail'], $archives);
+            $this->deleteTime($sharings, 'd_datetime_demande');
             $this->render('index', compact('sharings'));
         } else {
             header("Location: /historia/user/connect?lang={$GLOBALS['i18n']}");
@@ -19,7 +19,7 @@ class SharingController extends AbstractController {
         if ($this->isConnected()) {
             $this->loadModel('sharing');
             $sharing = SharingModel::getSharing($token);
-            $this->deleteTime($sharing);
+            $this->deleteTime($sharing, 'd_datetime_demande');
             if (empty($sharing)) {
                 http_response_code(400);
                 exit;
@@ -34,7 +34,11 @@ class SharingController extends AbstractController {
                     $this->dialog('Votre lien n\'est pas un lien WeTransfer valide');
                     exit;
                 }
-                $this->sendMail($sharing[0]);
+                $this->loadModel('demand');
+                $banneur = DemandModel::getUserToken($token);
+                $this->loadModel('strike');
+                $strike = StrikeModel::initToken();
+                $this->sendMail($sharing[0], $banneur[0]['u_jeton'], $strike);
                 SharingModel::doSharing($_SESSION['mail'], $sharing[0]['u_mail'], $sharing[0]['d_jeton'], $_POST['nombre_de_pages']);
                 $this->updateSession([
                     'ratio' => $_SESSION['ratio'] + $_POST['nombre_de_pages']
@@ -48,7 +52,7 @@ class SharingController extends AbstractController {
         }
     }
 
-    private function sendMail(array $sharing): void {
+    private function sendMail(array $sharing, string $banneur, string $strike): void {
         $subject = 'Demande satisfaite';
         $body = <<<HTML
                 <html>
@@ -65,7 +69,7 @@ class SharingController extends AbstractController {
                             <li>Nombre de pages : {$_POST['nombre_de_pages']}</li>
                         </ul>
                         <p>Si ce partage est abusif, vous pouvez le signaler en cliquant sur ce
-                            <a href="http://localhost/historia/user/strike/{$_SESSION['jeton']}?lang={$GLOBALS['i18n']}">lien</a>.
+                            <a href="http://localhost/historia/strike/index/$banneur/{$_SESSION['jeton']}/$strike?lang={$GLOBALS['i18n']}">lien</a>.
                         </p>
                         <p>---------------</p>
                         <p>Ceci est un mail automatique, merci de ne pas y répondre.</p>

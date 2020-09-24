@@ -15,4 +15,8 @@ $(document).ready(function () {
         $(".description").hide();
     });
     $(".dialog").dialog();
+    $(".datepicker").datepicker({
+        minDate: -0,
+        maxDate: +14
+    });
 });

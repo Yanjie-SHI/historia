@@ -30,20 +30,6 @@ class UserController extends AbstractController {
         }
     }
 
-    public function strike(string $token): void {
-        if ($this->isConnected()) {
-            $this->loadModel('user');
-            $user = UserModel::getUser($token);
-            if (!empty($user)) {
-                UserModel::strikeUser($user[0]);
-            } else {
-                http_response_code(400);
-            }
-        } else {
-            header("Location: /historia/user/connect?lang={$GLOBALS['i18n']}");
-        }
-    }
-
     public function validate(string $token): void {
         $this->loadModel('user');
         $message = UserModel::validateUser($token);

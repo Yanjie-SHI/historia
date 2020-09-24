@@ -2,19 +2,14 @@
 
 class ListModel extends MyPDO {
 
-    public static function readArchive(string $mail, bool $format = false): array {
-        $req = "SELECT a_reference, p_jeton, c_nom, c_url "
+    public static function readArchive(string $mail): array {
+        $req = "SELECT a_reference, p_jeton, c_nom, c_url, c_identifiant "
                 . "FROM possession "
                 . "JOIN archive ON p_fk_archive_identifiant = a_identifiant "
                 . "JOIN centre ON a_fk_centre_identifiant = c_identifiant "
                 . "WHERE p_fk_utilisateur_mail = '$mail'";
         $result_set = self::getMyPDO()->query($req);
-        $rows = $result_set->fetchAll();
-        if (!$format) {
-            return $rows;
-        } else {
-            return self::format($rows);
-        }
+        return $result_set->fetchAll();
     }
 
     public static function addArchive(string $mail, string $reference, string $centre): bool {
@@ -40,23 +35,6 @@ class ListModel extends MyPDO {
                 . "WHERE p_fk_utilisateur_mail = '$mail' AND a_reference = '$reference' AND a_fk_centre_identifiant = $centre";
         $result_set = self::getMyPDO()->query($req);
         return $result_set->rowCount();
-    }
-
-    private static function format(array $rows): array {
-        $archives = '';
-        $size = count($rows);
-        for ($i = 0; $i < $size; $i++) {
-            if ($i < $size - 1) {
-                $archives .= self::getMyPDO()->quote($rows[$i]['a_reference']) . ', ';
-            } else {
-                $archives .= self::getMyPDO()->quote($rows[$i]['a_reference']);
-            }
-        }
-        if (strlen($archives) > 0) {
-            return ['references' => $archives];
-        } else {
-            return ['references' => 'NULL'];
-        }
     }
 
 }

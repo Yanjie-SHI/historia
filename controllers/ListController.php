@@ -5,10 +5,8 @@ class ListController extends AbstractController {
     public function index(): void {
         if ($this->isConnected()) {
             $this->loadModel('list');
-            $this->loadModel('center');
             $archives = ListModel::readArchive($_SESSION['mail']);
-            $centres = CenterModel::readCenter();
-            $this->render('index', compact('archives', 'centres'));
+            $this->render('index', compact('archives'));
         } else {
             header("Location: /historia/user/connect?lang={$GLOBALS['i18n']}");
         }
@@ -26,7 +24,9 @@ class ListController extends AbstractController {
                     $this->dialog('Impossible d\'ajouter l\'archive, vous la possédez déjà');
                 }
             } else {
-                http_response_code(400);
+                $this->loadModel('center');
+                $centres = CenterModel::readCenter();
+                $this->render('add', compact('centres'));
             }
         } else {
             header("Location: /historia/user/connect?lang={$GLOBALS['i18n']}");

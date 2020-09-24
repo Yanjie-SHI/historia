@@ -1,41 +1,12 @@
 <?php $title = $GLOBALS['lang']['list_index_title'] ?>
 
-<form action="/historia/list/add?lang=<?= $GLOBALS['i18n'] ?>" method="post">
-    <fieldset>
-        <legend><?= $GLOBALS['lang']['add_archive'] ?></legend>
-            <div>
-                <input type="text" name="reference" placeholder="<?= $GLOBALS['lang']['reference'] ?>*" required>
-            </div>
-            <br>
-            <div>
-                <label for="center"><?= $GLOBALS['lang']['center'] ?>*</label>
-                <select name="centre" class="selectize" id="center" required>
-                <?php foreach ($centres as $centre) : ?>
-                    <optgroup label="<?= $centre[0]['c_type'] . ' [' . count($centre) . ']' ?>">
-                    <?php foreach ($centre as $value) : ?>
-                        <option value="<?= $value['c_identifiant'] ?>"><?= $value['c_nom'] ?></option>
-                    <?php endforeach; ?>
-                    </optgroup>
-                <?php endforeach; ?>
-                </select>
-            </div>
-            <br>
-            <div>
-                <input type="submit" value="<?= $GLOBALS['lang']['add'] ?>">
-            </div>
-            <br>
-            <div>
-                <input type="reset" value="<?= $GLOBALS['lang']['reset'] ?>">
-            </div>
-    </fieldset>
-</form>
-<br>
-
 <table>
     <thead>
-        <th><?= $GLOBALS['lang']['archive'] ?></th>
-        <th><?= $GLOBALS['lang']['center'] ?></th>
-        <th><?= $GLOBALS['lang']['delete'] ?></th>
+        <tr>
+            <th><?= $GLOBALS['lang']['quote'] ?></th>
+            <th><?= $GLOBALS['lang']['center'] ?></th>
+            <th><?= $GLOBALS['lang']['delete'] ?></th>
+        </tr>
     </thead>
     <tbody>
     <?php foreach ($archives as $archive) : ?>
@@ -44,9 +15,9 @@
                 <center><?= $archive['a_reference'] ?></center>
             </td>
             <td>
-            <center>
-                <a href="<?= $archive['c_url'] ?>"><?= $archive['c_nom'] ?></a>
-            </center>
+                <center>
+                    <a href="<?= $archive['c_url'] ?>"><?= $archive['c_nom'] ?></a>
+                </center>
             </td>
             <td>
                 <center>
@@ -59,8 +30,10 @@
     <?php endforeach; ?>
     </tbody>
     <tfoot>
-        <th><?= $GLOBALS['lang']['archive'] ?></th>
-        <th><?= $GLOBALS['lang']['center'] ?></th>
-        <th><?= $GLOBALS['lang']['delete'] ?></th>
+        <tr>
+            <th><?= $GLOBALS['lang']['quote'] ?></th>
+            <th><?= $GLOBALS['lang']['center'] ?></th>
+            <th><?= $GLOBALS['lang']['delete'] ?></th>
+        </tr>
     </tfoot>
 </table>
